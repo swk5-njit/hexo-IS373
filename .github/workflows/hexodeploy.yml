@@ -62,7 +62,7 @@ jobs:
       # Install Playwright browsers
       - name: Install Playwright browsers
         working-directory: playwright-IS373
-        run: npx playwright install
+        run: npx playwright install --with-deps
 
       # Run the Playwright tests against the running Hexo site
       - name: Run Playwright tests
