@@ -26,7 +26,12 @@ jobs:
 
       # Install dependencies
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       # Generate the static website
       - name: Generate Hexo site
@@ -68,7 +73,16 @@ jobs:
       - name: Stop Hexo server
         if: always()
         run: |
-          kill $(cat hexo.pid)
+          if [ -f hexo.pid ]; then
+            PID=$(cat hexo.pid)
+            if ps -p $PID > /dev/null; then
+              kill $PID
+            else
+              echo "$PID doesn't correspond to a process that is currently running."
+            fi
+          else
+            echo "The 'hexo.pid' file doesn't exist."
+          fi
 
   deploy:
     runs-on: ubuntu-latest
@@ -86,7 +100,12 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm ci
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
       - name: Generate Hexo site
         run: npx hexo generate
