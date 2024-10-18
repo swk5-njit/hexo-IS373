@@ -51,7 +51,7 @@ jobs:
       - name: Checkout Playwright test repository
         uses: actions/checkout@v3
         with:
-          repository: dfianuale/playwright-IS373
+          repository: Shaan6695/playwright-IS373
           path: playwright-IS373
 
       # Install Playwright dependencies
